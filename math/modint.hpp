@@ -72,6 +72,7 @@ class static_modint {
     val = x % MOD;
     return *this;
   }
+  modint operator-() const { return val == 0 ? 0 : MOD - val; }
   explicit operator base_t() const { return val; }
   base_t get() const { return val; }
   constexpr base_t get_mod() const { return mod; }

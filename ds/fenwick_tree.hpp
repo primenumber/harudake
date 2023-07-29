@@ -12,22 +12,22 @@
 namespace harudake {
 
 // Auto extended container
-template <typename T, typename Container = std::vector<T>>
-class auto_vector {
- public:
+template <typename T, typename Container = std::vector<T>> class auto_vector {
+public:
   auto_vector() : data() {}
   auto_vector(size_t N, T val = T()) : data(N, val) {}
-  T& operator[](size_t index) {
-    if (index >= std::size(data)) expand_to(index);
+  T &operator[](size_t index) {
+    if (index >= std::size(data))
+      expand_to(index);
     return data[index];
   }
-  const T& at(size_t index) const {
-    return data.at(index);
-  }
- private:
+  const T &at(size_t index) const { return data.at(index); }
+
+private:
   void expand_to(size_t index) {
     size_t new_size = 1;
-    while (index >= new_size) new_size *= 2;
+    while (index >= new_size)
+      new_size *= 2;
     data.resize(new_size);
   }
   Container data;
@@ -39,24 +39,24 @@ class auto_vector {
 // containers can be used:
 // auto_vector, unrodered_map or map
 
-template <typename T = int64_t, typename Container = auto_vector<T>, typename F = std::plus<T>>
-class fenwick_tree {
- public:
+template <typename T = int64_t, typename Container = std::vector<T>, typename F = std::plus<T>> class fenwick_tree {
+public:
   fenwick_tree(size_t N) : N(N), data() {}
   fenwick_tree(size_t N, F merge) : N(N), data(), merge(merge) {}
-  void update(size_t index, const T& value) {
-    for (; index < N; index |= index+1) {
-      data[index] = merge(data[index], value);
+  void update(size_t index, const T &value) {
+    for (; index < N; index |= index + 1) {
+      data.at(index) = merge(data.at(index), value);
     }
   }
   T query(ptrdiff_t index) {
     T result{};
-    for (; index >= 0; index = (index&(index+1))-1) {
-      result = merge(result, data[index]);
+    for (; index >= 0; index = (index & (index + 1)) - 1) {
+      result = merge(result, data.at(index));
     }
     return result;
   }
- private:
+
+private:
   size_t N;
   Container data;
   F merge;

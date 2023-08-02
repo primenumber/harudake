@@ -41,7 +41,7 @@ private:
 
 template <typename T = int64_t, typename Container = std::vector<T>, typename F = std::plus<T>> class fenwick_tree {
 public:
-  fenwick_tree(size_t N) : N(N), data() {}
+  fenwick_tree(size_t N) : N(N), data(N, 0) {}
   fenwick_tree(size_t N, F merge) : N(N), data(), merge(merge) {}
   void update(size_t index, const T &value) {
     for (; index < N; index |= index + 1) {
